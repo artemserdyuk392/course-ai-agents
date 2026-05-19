@@ -72,6 +72,45 @@ window.addEventListener('resize', () => {
   }
 });
 
+// ========== CURSOR GLOW TRAIL ==========
+(function() {
+  if (matchMedia('(hover: none)').matches) return;
+
+  const dots = [];
+  const MAX_DOTS = 25;
+  let lastTime = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    const now = performance.now();
+    if (now - lastTime < 30) return;
+    lastTime = now;
+
+    const loading = document.getElementById('loadingScreen');
+    if (loading && loading.style.display !== 'none') return;
+    if (document.querySelector('.pay-modal-overlay') || document.querySelector('.reveal-overlay')) return;
+
+    const dot = document.createElement('div');
+    dot.className = 'cursor-glow-dot';
+    dot.style.left = (e.clientX - 3) + 'px';
+    dot.style.top = (e.clientY - 3) + 'px';
+    document.body.appendChild(dot);
+    dots.push(dot);
+
+    requestAnimationFrame(() => dot.classList.add('fade'));
+
+    if (dots.length > MAX_DOTS) {
+      const old = dots.shift();
+      old.remove();
+    }
+
+    setTimeout(() => {
+      dot.remove();
+      const idx = dots.indexOf(dot);
+      if (idx > -1) dots.splice(idx, 1);
+    }, 600);
+  });
+})();
+
 // ========== READING PROGRESS BAR ==========
 function updateReadingProgress() {
   const bar = document.getElementById('readingProgress');
@@ -217,7 +256,7 @@ function startTypewriter(el) {
   setTimeout(type, 600);
 }
 
-// ========== FEATURE 1: LECTURE TYPEWRITER ==========
+// ========== LECTURE TYPEWRITER ==========
 let lectureTypewriterAbort = false;
 
 function startLectureTypewriter(contentEl) {
@@ -300,7 +339,7 @@ function wrapLectureContent(html) {
   return result;
 }
 
-// ========== FEATURE 2: MARQUEE QUOTES ==========
+// ========== MARQUEE QUOTES ==========
 const QUOTES = [
   '"Я знаю кунг-фу." — Нео, Матрица',
   '"Хьюстон, у нас проблема." — Аполлон 13',
@@ -353,7 +392,7 @@ function initMarquee() {
   track.innerHTML = content + content;
 }
 
-// ========== FEATURE 3: PDF DOWNLOAD ==========
+// ========== PDF DOWNLOAD ==========
 function downloadLecturePDF(page) {
   const contentEl = document.getElementById('content');
   if (!contentEl) return;
@@ -373,8 +412,6 @@ function downloadLecturePDF(page) {
     const full = firstP.getAttribute('data-full');
     if (full) firstP.innerHTML = full;
   }
-
-  const title = lectureNames[page] || page;
 
   const opt = {
     margin: [12, 12, 16, 12],
@@ -409,7 +446,7 @@ function getPdfButton(page) {
   return `<button class="btn-pdf" onclick="downloadLecturePDF('${page}')">📄 Скачать PDF</button>`;
 }
 
-// ========== FEATURE 4: NEURAL RAIN TRANSITION ==========
+// ========== NEURAL RAIN TRANSITION ==========
 function playNeuralRain() {
   const canvas = document.createElement('canvas');
   canvas.id = 'neuralRainCanvas';
@@ -502,20 +539,17 @@ function playNeuralRain() {
   requestAnimationFrame(animate);
 }
 
-// ========== FEATURE 5: NEURO SVG BACKGROUNDS ==========
+// ========== NEURO SVG BACKGROUNDS ==========
 const NEURO_SVGS = [
-  // Neurocow
   `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <g fill="none" stroke="rgba(0,255,65,0.06)" stroke-width="1.2">
       <path d="M40,140 Q50,100 70,95 Q80,80 100,85 Q120,80 130,95 Q150,100 160,140 Q150,160 130,165 Q110,170 100,168 Q90,170 70,165 Q50,160 40,140Z"/>
       <path d="M65,90 Q60,70 55,65 M135,90 Q140,70 145,65"/>
-      <line x1="100" y1="60" x2="100" y2="45"/>
-      <circle cx="100" cy="42" r="4"/>
+      <line x1="100" y1="60" x2="100" y2="45"/><circle cx="100" cy="42" r="4"/>
       <circle cx="75" cy="110" r="6"/><circle cx="125" cy="110" r="6"/>
       <circle cx="90" cy="130" r="5"/><circle cx="110" cy="130" r="5"/>
       <circle cx="100" cy="95" r="5"/><circle cx="85" cy="150" r="4"/>
-      <circle cx="115" cy="150" r="4"/><circle cx="70" cy="135" r="3"/>
-      <circle cx="130" cy="135" r="3"/>
+      <circle cx="115" cy="150" r="4"/><circle cx="70" cy="135" r="3"/><circle cx="130" cy="135" r="3"/>
       <line x1="75" y1="110" x2="100" y2="95"/><line x1="125" y1="110" x2="100" y2="95"/>
       <line x1="75" y1="110" x2="90" y2="130"/><line x1="125" y1="110" x2="110" y2="130"/>
       <line x1="90" y1="130" x2="110" y2="130"/><line x1="85" y1="150" x2="90" y2="130"/>
@@ -525,7 +559,6 @@ const NEURO_SVGS = [
       <circle cx="120" cy="105" r="2" fill="rgba(0,255,65,0.06)"/>
     </g>
   </svg>`,
-  // Neurocorn (corn)
   `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <g fill="none" stroke="rgba(0,255,65,0.06)" stroke-width="1.2">
       <path d="M80,170 Q75,130 78,100 Q80,70 90,50 Q95,40 100,35 Q105,40 110,50 Q120,70 122,100 Q125,130 120,170Z"/>
@@ -547,11 +580,9 @@ const NEURO_SVGS = [
       <line x1="113" y1="120" x2="110" y2="140"/>
     </g>
   </svg>`,
-  // Neurofield
   `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <g fill="none" stroke="rgba(0,255,65,0.06)" stroke-width="1.2">
-      <line x1="10" y1="180" x2="190" y2="180"/>
-      <line x1="10" y1="185" x2="190" y2="185"/>
+      <line x1="10" y1="180" x2="190" y2="180"/><line x1="10" y1="185" x2="190" y2="185"/>
       <line x1="30" y1="180" x2="30" y2="130"/><circle cx="30" cy="128" r="3"/>
       <line x1="30" y1="128" x2="20" y2="110"/><circle cx="20" cy="108" r="2.5"/>
       <line x1="30" y1="128" x2="40" y2="108"/><circle cx="40" cy="106" r="2.5"/>
@@ -582,38 +613,28 @@ const NEURO_SVGS = [
 
 function placeNeuroSVGs() {
   document.querySelectorAll('.neuro-svg').forEach(el => el.remove());
-
   const mainEl = document.querySelector('.main');
   if (!mainEl) return;
-
   const count = 1 + Math.floor(Math.random() * 2);
   const used = [];
-
   for (let i = 0; i < count; i++) {
     let idx;
     do { idx = Math.floor(Math.random() * NEURO_SVGS.length); } while (used.includes(idx) && used.length < NEURO_SVGS.length);
     used.push(idx);
-
     const div = document.createElement('div');
     div.className = 'neuro-svg';
     div.innerHTML = NEURO_SVGS[idx];
-
     const positions = [
-      { top: '80px', left: '10px' },
-      { top: '300px', right: '10px' },
-      { bottom: '200px', left: '20px' },
-      { top: '500px', right: '20px' },
-      { bottom: '100px', right: '30px' },
-      { top: '150px', left: '30px' }
+      { top: '80px', left: '10px' }, { top: '300px', right: '10px' },
+      { bottom: '200px', left: '20px' }, { top: '500px', right: '20px' },
+      { bottom: '100px', right: '30px' }, { top: '150px', left: '30px' }
     ];
-    const pos = positions[Math.floor(Math.random() * positions.length)];
-    Object.assign(div.style, pos);
-
+    Object.assign(div.style, positions[Math.floor(Math.random() * positions.length)]);
     mainEl.appendChild(div);
   }
 }
 
-// ========== FEATURE 6: AUTHORS BLOCK ==========
+// ========== AUTHORS BLOCK ==========
 function getAuthorsBlock() {
   return `
     <div class="authors-terminal" id="authorsTerminal">
@@ -629,9 +650,7 @@ function getAuthorsBlock() {
 function initAuthorsObserver() {
   const terminal = document.getElementById('authorsTerminal');
   if (!terminal) return;
-
   let triggered = false;
-
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting && !triggered) {
@@ -641,7 +660,6 @@ function initAuthorsObserver() {
       }
     });
   }, { threshold: 0.3 });
-
   observer.observe(terminal);
 }
 
@@ -649,10 +667,8 @@ function runAuthorsTypewriter() {
   const cmdEl = document.getElementById('atCmd');
   const lines = [document.getElementById('atLine1'), document.getElementById('atLine2'), document.getElementById('atLine3')];
   const echoEl = document.getElementById('atEcho');
-
   const cmdText = '> cat /credits/authors.txt';
   const echoText = '> echo "Спасибо, что дочитали!"';
-
   let i = 0;
   function typeCmd() {
     if (i <= cmdText.length) {
@@ -667,7 +683,6 @@ function runAuthorsTypewriter() {
       }, 300);
     }
   }
-
   let j = 0;
   function typeEcho() {
     echoEl.classList.add('visible');
@@ -680,8 +695,228 @@ function runAuthorsTypewriter() {
     }
     step();
   }
-
   typeCmd();
+}
+
+// ========== PAYMENT PAGE ==========
+let lastTestScore = 0;
+let lastTestCorrect = 0;
+let lastTestTotal = 30;
+
+function renderPayment() {
+  return `
+    <div class="payment-hero">
+      <span class="badge">🎓 Нейросертификат</span>
+      <h1>НЕЙРОСЕРТИФИКАТ PREMIUM ULTRA PRO MAX</h1>
+      <p class="subtitle">Подтверди свои знания в области AI-агентов</p>
+    </div>
+
+    <h2 style="text-align:center; border:none; margin-top:16px;">Выберите тариф</h2>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-title">Базовый</div>
+        <div class="pricing-price"><s>0.001 BTC / мес</s><br>Бесплатно (но мы будем грустить)</div>
+        <ul class="pricing-features">
+          <li>Сертификат в формате .txt</li>
+          <li>Подпись нейрокоровы</li>
+          <li>Доступ к моральной поддержке 24/7</li>
+        </ul>
+        <button class="btn-pricing" onclick="openPayModal()">Выбрать (это ловушка)</button>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Популярный</div>
+        <div class="pricing-title">Продвинутый</div>
+        <div class="pricing-price">Массаж для сервера / мес</div>
+        <ul class="pricing-features">
+          <li>Сертификат в формате .pdf с ПЕЧАТЬЮ</li>
+          <li>Персональная нейрокорова-наставник</li>
+          <li>Доступ к секретному Telegram-каналу (которого нет)</li>
+          <li>3 бесплатных промпта в день (у вас и так безлимит)</li>
+        </ul>
+        <button class="btn-pricing" onclick="openPayModal()">Купить (карта не нужна)</button>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-title">Корпоративный</div>
+        <div class="pricing-price">Позвоните нам (телефон не подключён)</div>
+        <ul class="pricing-features">
+          <li>Всё из Продвинутого</li>
+          <li>Нейрокорова приедет лично</li>
+          <li>Интеграция с вашим холодильником</li>
+          <li>Еженедельные отчёты о погоде</li>
+          <li>Александр Ясаков лично пожмёт руку</li>
+        </ul>
+        <button class="btn-pricing" onclick="openPayModal()">Связаться (не работает)</button>
+      </div>
+    </div>
+
+    <div class="payment-legal">
+      Нажимая кнопку, вы соглашаетесь отдать свою нейрокорову в аренду на 42 года. Все транзакции обрабатываются нейрокукурузой версии 0.0.1-alpha. При возникновении вопросов обращайтесь к нейрополю по адресу /dev/null. Лицензия: WTFPL. &copy; 2026 Нейроферма Глобал
+    </div>
+  `;
+}
+
+function openPayModal() {
+  const overlay = document.createElement('div');
+  overlay.className = 'pay-modal-overlay';
+  overlay.innerHTML = `
+    <div class="pay-modal">
+      <h2>💳 Оформление подписки</h2>
+      <input type="text" class="pay-field" id="payCard" placeholder="Номер карты" maxlength="19" autocomplete="off">
+      <div class="pay-row">
+        <input type="text" class="pay-field" id="payExpiry" placeholder="MM/YY" maxlength="5" autocomplete="off">
+        <input type="password" class="pay-field" id="payCvv" placeholder="CVV" maxlength="3" autocomplete="off">
+      </div>
+      <input type="text" class="pay-field" id="payName" placeholder="Имя на карте" autocomplete="off">
+      <button class="btn-pay" id="btnPay" onclick="processPayment()">💰 Оплатить</button>
+      <div class="pay-progress" id="payProgress"><div class="pay-progress-fill" id="payProgressFill"></div></div>
+      <div class="pay-status" id="payStatus"></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const cardInput = overlay.querySelector('#payCard');
+  cardInput.addEventListener('input', () => {
+    let v = cardInput.value.replace(/\D/g, '').slice(0, 16);
+    v = v.replace(/(.{4})/g, '$1 ').trim();
+    cardInput.value = v;
+  });
+
+  const expiryInput = overlay.querySelector('#payExpiry');
+  expiryInput.addEventListener('input', () => {
+    let v = expiryInput.value.replace(/\D/g, '').slice(0, 4);
+    if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
+    expiryInput.value = v;
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.remove();
+  });
+}
+
+function processPayment() {
+  const btn = document.getElementById('btnPay');
+  const progress = document.getElementById('payProgress');
+  const fill = document.getElementById('payProgressFill');
+  const status = document.getElementById('payStatus');
+
+  const card = document.getElementById('payCard').value.trim();
+  const expiry = document.getElementById('payExpiry').value.trim();
+  const cvv = document.getElementById('payCvv').value.trim();
+  const name = document.getElementById('payName').value.trim();
+  const hasInput = card.length > 0 || expiry.length > 0 || cvv.length > 0 || name.length > 0;
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Обработка платежа...';
+
+  setTimeout(() => {
+    progress.style.display = 'block';
+    status.textContent = 'Связь с банком...';
+    requestAnimationFrame(() => fill.style.width = '100%');
+
+    setTimeout(() => {
+      status.textContent = 'Подтверждение транзакции...';
+
+      setTimeout(() => {
+        document.body.classList.add('pay-glitch-active');
+        setTimeout(() => {
+          document.body.classList.remove('pay-glitch-active');
+          const modal = document.querySelector('.pay-modal-overlay');
+          if (modal) modal.remove();
+          showRevealScreen(hasInput);
+        }, 500);
+      }, 1000);
+    }, 2000);
+  }, 2000);
+}
+
+function showRevealScreen(hadInput) {
+  const overlay = document.createElement('div');
+  overlay.className = 'reveal-overlay';
+
+  const canvas = document.createElement('canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  overlay.appendChild(canvas);
+
+  const smartPrefix = hadInput
+    ? ''
+    : '<div class="reveal-line reveal-text">Даже не попытался ввести данные. Умный ход. 🧠</div>';
+
+  overlay.innerHTML += `
+    <div class="reveal-content">
+      <div class="reveal-line reveal-emoji">😄</div>
+      <div class="reveal-line reveal-title">РАССЛАБЬСЯ</div>
+      ${smartPrefix}
+      <div class="reveal-line reveal-text">Это был тест на внимательность.</div>
+      <div class="reveal-line reveal-text">Курс полностью бесплатный. Мы бы никогда не взяли с тебя деньги за знания об AI-агентах.</div>
+      <div class="reveal-line reveal-text">А вот карту лучше перевыпусти. Шутка. Или нет. 👀</div>
+      <div class="reveal-line reveal-text">Твой результат теста: ${lastTestScore}% (${lastTestCorrect} из ${lastTestTotal})</div>
+      <div class="reveal-line reveal-text mono">print("Сертификат уже в твоём сердце ❤️")</div>
+      <div class="reveal-line"><a href="#home" class="btn-back-home" onclick="this.closest('.reveal-overlay').remove()">← Вернуться на главную</a></div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  const lines = overlay.querySelectorAll('.reveal-line');
+  lines.forEach((line, i) => {
+    setTimeout(() => line.classList.add('visible'), 300 + i * 400);
+  });
+
+  runConfetti(canvas);
+}
+
+function runConfetti(canvas) {
+  const ctx = canvas.getContext('2d');
+  const pieces = [];
+  const colors = ['#00ff41', '#ffffff', '#ffd700', '#33ff66', '#e0e0e0'];
+
+  for (let i = 0; i < 60; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random() * 300,
+      w: 6 + Math.random() * 8,
+      h: 6 + Math.random() * 8,
+      vy: 1.5 + Math.random() * 3,
+      vx: (Math.random() - 0.5) * 2,
+      rot: Math.random() * Math.PI * 2,
+      vr: (Math.random() - 0.5) * 0.1,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: 0.8 + Math.random() * 0.2
+    });
+  }
+
+  const start = performance.now();
+
+  function draw(now) {
+    const elapsed = now - start;
+    if (elapsed > 5000) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const fade = elapsed > 3500 ? 1 - (elapsed - 3500) / 1500 : 1;
+
+    pieces.forEach(p => {
+      p.y += p.vy;
+      p.x += p.vx;
+      p.rot += p.vr;
+      p.vx += (Math.random() - 0.5) * 0.05;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = p.alpha * Math.max(0, fade);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
 }
 
 // ========== PAGE RENDERING ==========
@@ -699,6 +934,8 @@ function renderPage(page) {
       html = renderHome();
     } else if (page === 'test') {
       html = renderTest();
+    } else if (page === 'payment') {
+      html = renderPayment();
     } else if (CONTENT[page]) {
       let contentHTML = CONTENT[page];
       if (isLecture) {
@@ -779,11 +1016,11 @@ function renderHome() {
     </div>
     <div class="home-cards">${cards}</div>
     ${getAuthorsBlock()}
-    <div class="footer">&gt; AI-агенты и мультиагентные системы &copy; 2025</div>
+    <div class="footer">&gt; AI-агенты и мультиагентные системы &copy; 2026</div>
   `;
 }
 
-// ========== ANIMATED SCORE COUNTER ==========
+// ========== ANIMATED SCORE COUNTER + CERTIFICATE BUTTON ==========
 const origCheckTest = window.checkTest;
 window.checkTest = function() {
   origCheckTest();
@@ -793,6 +1030,14 @@ window.checkTest = function() {
   const finalText = scoreEl.textContent;
   const finalNum = parseInt(finalText);
   if (isNaN(finalNum)) return;
+
+  const resultTextEl = document.getElementById('resultText');
+  const match = resultTextEl ? resultTextEl.textContent.match(/(\d+)\s.*?(\d+)/) : null;
+  if (match) {
+    lastTestCorrect = parseInt(match[1]);
+    lastTestTotal = parseInt(match[2]);
+  }
+  lastTestScore = finalNum;
 
   let current = 0;
   scoreEl.textContent = '0%';
@@ -805,6 +1050,15 @@ window.checkTest = function() {
     }
     scoreEl.textContent = current + '%';
   }, 30);
+
+  const resultEl = document.getElementById('testResult');
+  if (resultEl && !resultEl.querySelector('.btn-certificate')) {
+    const certBtn = document.createElement('a');
+    certBtn.href = '#payment';
+    certBtn.className = 'btn-certificate';
+    certBtn.textContent = '🎓 Получить сертификат';
+    resultEl.appendChild(certBtn);
+  }
 };
 
 // ========== ROUTER ==========
