@@ -1,21 +1,27 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="light">
+<html lang="ru" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI-агенты и мультиагентные системы</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <canvas id="matrixCanvas"></canvas>
+  <div id="readingProgress"></div>
+
+  <div class="loading-screen" id="loadingScreen" style="display:none;">
+    <div class="loading-text" id="loadingText"></div>
+    <div class="loading-bar"><div class="loading-bar-fill" id="loadingBarFill"></div></div>
+  </div>
+
   <header class="header">
     <div class="header-left">
       <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Меню">&#9776;</button>
-      <a href="#home" class="logo">AI-Агенты</a>
+      <a href="#home" class="logo">&gt;_ AI-Агенты</a>
     </div>
     <div class="header-right">
-      <button class="theme-toggle" onclick="toggleTheme()">&#9790; Тема</button>
+      <button class="theme-toggle" onclick="toggleTheme()">&#9790; тема</button>
     </div>
   </header>
 
@@ -23,11 +29,11 @@
 
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-section">
-      <div class="sidebar-title">Главная</div>
+      <div class="sidebar-title">&gt; Главная</div>
       <a href="#home" class="sidebar-link" data-page="home">Обзор курса</a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-title">Лекции</div>
+      <div class="sidebar-title">&gt; Лекции</div>
       <a href="#lecture-1" class="sidebar-link" data-page="lecture-1">1. Введение в AI-агенты</a>
       <a href="#lecture-2" class="sidebar-link" data-page="lecture-2">2. Архитектура агентов</a>
       <a href="#lecture-3" class="sidebar-link" data-page="lecture-3">3. Обучение агентов</a>
@@ -38,7 +44,7 @@
       <a href="#lecture-8" class="sidebar-link" data-page="lecture-8">8. Практические аспекты</a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-title">Практика</div>
+      <div class="sidebar-title">&gt; Практика</div>
       <a href="#practice-1" class="sidebar-link" data-page="practice-1">Практика 1</a>
       <a href="#practice-2" class="sidebar-link" data-page="practice-2">Практика 2</a>
       <a href="#practice-3" class="sidebar-link" data-page="practice-3">Практика 3</a>
@@ -49,15 +55,13 @@
       <a href="#practice-8" class="sidebar-link" data-page="practice-8">Практика 8</a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-title">Контроль</div>
+      <div class="sidebar-title">&gt; Контроль</div>
       <a href="#test" class="sidebar-link" data-page="test">Итоговый тест</a>
     </div>
   </nav>
 
   <main class="main">
-    <div class="content" id="content">
-      <!-- Content loaded dynamically -->
-    </div>
+    <div class="content" id="content"></div>
   </main>
 
   <script src="js/content.js"></script>
