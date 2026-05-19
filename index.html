@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-агенты и мультиагентные системы</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Меню">&#9776;</button>
+      <a href="#home" class="logo">AI-Агенты</a>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" onclick="toggleTheme()">&#9790; Тема</button>
+    </div>
+  </header>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Главная</div>
+      <a href="#home" class="sidebar-link" data-page="home">Обзор курса</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Лекции</div>
+      <a href="#lecture-1" class="sidebar-link" data-page="lecture-1">1. Введение в AI-агенты</a>
+      <a href="#lecture-2" class="sidebar-link" data-page="lecture-2">2. Архитектура агентов</a>
+      <a href="#lecture-3" class="sidebar-link" data-page="lecture-3">3. Обучение агентов</a>
+      <a href="#lecture-4" class="sidebar-link" data-page="lecture-4">4. Мультиагентные системы</a>
+      <a href="#lecture-5" class="sidebar-link" data-page="lecture-5">5. Координация и кооперация</a>
+      <a href="#lecture-6" class="sidebar-link" data-page="lecture-6">6. LLM-агенты</a>
+      <a href="#lecture-7" class="sidebar-link" data-page="lecture-7">7. Мультиагентные оркестраторы</a>
+      <a href="#lecture-8" class="sidebar-link" data-page="lecture-8">8. Практические аспекты</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Практика</div>
+      <a href="#practice-1" class="sidebar-link" data-page="practice-1">Практика 1</a>
+      <a href="#practice-2" class="sidebar-link" data-page="practice-2">Практика 2</a>
+      <a href="#practice-3" class="sidebar-link" data-page="practice-3">Практика 3</a>
+      <a href="#practice-4" class="sidebar-link" data-page="practice-4">Практика 4</a>
+      <a href="#practice-5" class="sidebar-link" data-page="practice-5">Практика 5</a>
+      <a href="#practice-6" class="sidebar-link" data-page="practice-6">Практика 6</a>
+      <a href="#practice-7" class="sidebar-link" data-page="practice-7">Практика 7</a>
+      <a href="#practice-8" class="sidebar-link" data-page="practice-8">Практика 8</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Контроль</div>
+      <a href="#test" class="sidebar-link" data-page="test">Итоговый тест</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="content" id="content">
+      <!-- Content loaded dynamically -->
+    </div>
+  </main>
+
+  <script src="js/content.js"></script>
+  <script src="js/test.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
