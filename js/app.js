@@ -151,14 +151,14 @@ function updateActiveLink(page) {
 
 // ========== LOADING SCREEN ==========
 const lectureNames = {
-  'lecture-1': 'Введение в AI-агенты',
-  'lecture-2': 'Архитектура агентов',
-  'lecture-3': 'Обучение агентов',
-  'lecture-4': 'Мультиагентные системы',
-  'lecture-5': 'Координация и кооперация',
-  'lecture-6': 'LLM-агенты',
-  'lecture-7': 'Мультиагентные оркестраторы',
-  'lecture-8': 'Практические аспекты'
+  'lecture-1': 'Архитектура интеллектуальных агентов',
+  'lecture-2': 'Языковые модели как основа агентов',
+  'lecture-3': 'Инструменты и действия агентов',
+  'lecture-4': 'Память и контекст агентов',
+  'lecture-5': 'Мультиагентные системы',
+  'lecture-6': 'Фреймворки для построения агентов',
+  'lecture-7': 'Безопасность и надёжность агентов',
+  'lecture-8': 'Продвинутые паттерны агентов'
 };
 
 let shownLoadings = new Set();
@@ -207,7 +207,7 @@ function getNavButtons(page) {
     'lecture-3','practice-3','lecture-4','practice-4',
     'lecture-5','practice-5','lecture-6','practice-6',
     'lecture-7','practice-7','lecture-8','practice-8',
-    'test'
+    'final-project','test','hardware'
   ];
   const titles = {
     'home':'Обзор курса',
@@ -219,7 +219,8 @@ function getNavButtons(page) {
     'lecture-6':'Лекция 6','practice-6':'Практика 6',
     'lecture-7':'Лекция 7','practice-7':'Практика 7',
     'lecture-8':'Лекция 8','practice-8':'Практика 8',
-    'test':'Итоговый тест'
+    'final-project':'Итоговая работа','test':'Итоговый тест',
+    'hardware':'Оборудование'
   };
   const idx = pages.indexOf(page);
   if (idx === -1) return '';
@@ -988,14 +989,14 @@ function renderPage(page) {
 
 function renderHome() {
   const lectures = [
-    {id:1, title:'Введение в AI-агенты', desc:'Определение, история, таксономия агентов'},
-    {id:2, title:'Архитектура агентов', desc:'BDI, подсистемы восприятия, цикл sense-plan-act'},
-    {id:3, title:'Обучение агентов', desc:'Reinforcement learning, PPO, reward shaping'},
-    {id:4, title:'Мультиагентные системы', desc:'Протоколы коммуникации, FIPA, KQML'},
-    {id:5, title:'Координация и кооперация', desc:'Теория игр, аукционы, Contract Net'},
-    {id:6, title:'LLM-агенты', desc:'ReAct, tool use, chain-of-thought, RAG'},
-    {id:7, title:'Мультиагентные оркестраторы', desc:'CrewAI, AutoGen, LangGraph, паттерны'},
-    {id:8, title:'Практические аспекты', desc:'Безопасность, prompt injection, guardrails'}
+    {id:1, title:'Архитектура интеллектуальных агентов', desc:'Типы агентов, паттерны проектирования, цикл sense-plan-act'},
+    {id:2, title:'Языковые модели как основа агентов', desc:'API OpenAI/Anthropic, промптинг, structured output'},
+    {id:3, title:'Инструменты и действия агентов', desc:'Tool use, function calling, ReAct pattern'},
+    {id:4, title:'Память и контекст агентов', desc:'RAG, vector stores, conversation memory'},
+    {id:5, title:'Мультиагентные системы', desc:'Оркестрация, протоколы взаимодействия, делегирование'},
+    {id:6, title:'Фреймворки для построения агентов', desc:'LangChain, LangGraph, CrewAI, Langflow'},
+    {id:7, title:'Безопасность и надёжность агентов', desc:'Prompt injection, guardrails, мониторинг'},
+    {id:8, title:'Продвинутые паттерны агентов', desc:'Самокоррекция, планирование, human-in-the-loop'}
   ];
 
   let cards = lectures.map(l => `
